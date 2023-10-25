@@ -28,8 +28,9 @@ async def on_ready(ready_event: EventData):
 
 
 async def on_message(msg: ChatMessage):
-    to_say = msg.user.name + ": " + msg.text
-    speak_message(to_say)
+    if msg.text[0] != '!':
+        to_say = msg.user.name + ": " + msg.text
+        speak_message(to_say)
 
 
 async def run():
