@@ -50,6 +50,7 @@ async def run():
     try:
         input('press ENTER to stop\n')
     finally:
+        print_debug("stopping...")
         chat.stop()
         await twitch.close()
 
