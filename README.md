@@ -1,5 +1,5 @@
 # TwitchPyTTS
-Powered by PyTwitchAPI
+Powered by PyTwitchAPI and gTTS
 
 ## Prerequisites 
 Clone the git repo
@@ -20,18 +20,9 @@ source bin/activate
 
 Install the required packages
 ```bash
-pip install twitchapi pyttsx3
+pip install twitchapi gTTS
 ```
 
-Install the required packages on your system (needed by pyttsx3)
-- Debian, or other Ubuntu based distributions 
-```bash
-sudo apt update && sudo apt install espeak ffmpeg libespeak1
-```
-- Arch
-```bash
-sudo pacman -S espeak-ng
-```
 
 ## Running the application
 Create an application on dev.twitch.tv, make sure to add `http://localhost:17563` as an allowed URL

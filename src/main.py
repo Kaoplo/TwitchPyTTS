@@ -5,8 +5,9 @@ from twitchAPI.type import AuthScope, ChatEvent
 from twitchAPI.chat import Chat, EventData, ChatMessage
 import asyncio
 import json
+from engine import speak
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = json.load(f)
 
 APP_ID = config['AppID']
@@ -15,22 +16,20 @@ USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
 TARGET_CHANNEL = config['Channel']
 
 
-def speak_message(message):
-    print("saying: " + message)
-    engine = pyttsx3.init()
-    engine.say(message)
-    engine.runAndWait()
+def print_debug(append):
+    print("DEBUG: " + append)
 
 
 async def on_ready(ready_event: EventData):
     await ready_event.chat.join_room(TARGET_CHANNEL)
-    print("ready!")
+    print_debug("ready!")
 
 
 async def on_message(msg: ChatMessage):
     if msg.text[0] != '!':
         to_say = msg.user.name + ": " + msg.text
-        speak_message(to_say)
+        print_debug("Saying: " + to_say)
+        speak(to_say)
 
 
 async def run():
@@ -47,7 +46,7 @@ async def run():
     chat.start()
 
     try:
-        input('press ENTER to stop\\n')
+        input('press ENTER to stop\n')
     finally:
         chat.stop()
         await twitch.close()
