@@ -30,6 +30,8 @@ async def on_message(msg: ChatMessage):
         to_say = msg.user.name + ": " + msg.text
         print_debug("Saying: " + to_say)
         speak(to_say)
+    else:
+        print_debug("Ignoring command: " + msg.text)
 
 
 async def run():
