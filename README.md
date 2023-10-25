@@ -1,8 +1,22 @@
 # TwitchPyTTS
 Powered by PyTwitchAPI
 
-## Dependencies
-Make sure you run these in a venv
+## Prerequisites 
+Clone the git repo
+```bash
+git clone https://github.com/Kaoplo/TwitchPyTTS.git
+```
+```bash
+cd TwitchPyTTS
+```
+Create a venv
+```bash
+python -m venv .
+```
+Enter the venv
+```bash
+source bin/activate
+```
 
 Install the required packages
 ```bash
@@ -10,12 +24,17 @@ pip install twitchapi pyttsx3
 ```
 
 Install the required packages on your system (needed by pyttsx3)
+- Debian, or other Ubuntu based distributions 
 ```bash
- sudo apt update && sudo apt install espeak ffmpeg libespeak1
+sudo apt update && sudo apt install espeak ffmpeg libespeak1
+```
+- Arch
+```bash
+sudo pacman -S espeak-ng
 ```
 
-## Before running
-Create an application on dev.twitch.tv
+## Running the application
+Create an application on dev.twitch.tv, make sure to add `http://localhost:17563` as an allowed URL
 
 Edit the `config.json` file
 ```json
@@ -25,8 +44,8 @@ Edit the `config.json` file
   "Channel": ""
 }
 ```
+Channel can be any channel you want to listen to
 
-## Running the application
 While in the venv, run `main.py`
 ```bash
 python main.py
