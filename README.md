@@ -39,5 +39,5 @@ Channel can be any channel you want to listen to
 
 While in the venv, run `main.py`
 ```bash
-python main.py
+python src/main.py
 ```
