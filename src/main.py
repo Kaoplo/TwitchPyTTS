@@ -34,6 +34,7 @@ async def on_message(msg: ChatMessage):
 
 
 async def run():
+    print_debug("Connecting to channel: " + TARGET_CHANNEL)
     twitch = await Twitch(APP_ID, APP_SECRET)
     auth = UserAuthenticator(twitch, USER_SCOPE)
     token, refresh_token = await auth.authenticate()
@@ -45,6 +46,7 @@ async def run():
     chat.register_event(ChatEvent.MESSAGE, on_message)
 
     chat.start()
+    print_debug("Connected!")
 
     try:
         input('press ENTER to stop\n')
