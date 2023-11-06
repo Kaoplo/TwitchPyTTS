@@ -187,3 +187,5 @@ fabric.properties
 
 *.json
 src/voice.mp3
+src/main.build
+src/main.bin

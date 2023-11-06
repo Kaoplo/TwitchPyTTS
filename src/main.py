@@ -6,7 +6,7 @@ import asyncio
 import json
 from engine import speak
 
-with open('../config.json', 'r') as f:
+with open('config.json', 'r') as f:
     config = json.load(f)
 
 APP_ID = config['AppID']
