@@ -1,3 +1,4 @@
+from PySide6.QtWidgets import QMainWindow
 from twitchAPI.twitch import Twitch
 from twitchAPI.oauth import UserAuthenticator
 from twitchAPI.type import AuthScope, ChatEvent
@@ -5,6 +6,9 @@ from twitchAPI.chat import Chat, EventData, ChatMessage
 import asyncio
 import json
 from engine import speak
+
+from gui.ui_mainwindow import Ui_MainWindow
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -56,5 +60,13 @@ async def run():
         await twitch.close()
 
 
-asyncio.run(run())
+class MainWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
+# asyncio.run(run())
+
+
 
