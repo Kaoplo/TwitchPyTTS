@@ -1,13 +1,15 @@
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow
+
 from twitchAPI.twitch import Twitch
 from twitchAPI.oauth import UserAuthenticator
 from twitchAPI.type import AuthScope, ChatEvent
 from twitchAPI.chat import Chat, EventData, ChatMessage
 import asyncio
 import json
-from engine import speak
+from src.TTSengine.engine import speak
 
-from gui.ui_mainwindow import Ui_MainWindow
+from src.gui.ui_mainwindow import Ui_MainWindow
 
 
 with open('config.json', 'r') as f:
@@ -66,7 +68,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-# asyncio.run(run())
+        self.ui.pushButton.clicked.connect(self.start_tts)
+
+    @Slot()
+    def start_tts(self):
+        asyncio.run(run())
+        print_debug("TTS started!")
+
 
 
 
