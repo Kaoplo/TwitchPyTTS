@@ -24,8 +24,8 @@ TARGET_CHANNEL = config['Channel']
 
 class MainWindow(QMainWindow):
 
-    def print_debug(append):
-        print("DEBUG: " + append)
+    def print_debug(self, append):
+        print("DEBUG: " + str(append))
 
     async def on_ready(self, ready_event: EventData):
         await ready_event.chat.join_room(TARGET_CHANNEL)
