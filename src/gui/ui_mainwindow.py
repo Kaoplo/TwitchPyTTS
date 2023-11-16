@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QListView, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QStatusBar, QToolBar,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QListWidget, QListWidgetItem, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QToolBar, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,12 +29,12 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralWidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(10, 280, 201, 81))
-        self.listView = QListView(self.centralWidget)
-        self.listView.setObjectName(u"listView")
-        self.listView.setGeometry(QRect(10, 10, 681, 251))
         self.pushButton_2 = QPushButton(self.centralWidget)
         self.pushButton_2.setObjectName(u"pushButton_2")
         self.pushButton_2.setGeometry(QRect(570, 270, 80, 24))
+        self.listWidget = QListWidget(self.centralWidget)
+        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setGeometry(QRect(30, 10, 621, 251))
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QMenuBar(MainWindow)
         self.menuBar.setObjectName(u"menuBar")
