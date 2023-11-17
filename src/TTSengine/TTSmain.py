@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QThread, Signal
 from PySide6.QtWidgets import QMainWindow
 
 from twitchAPI.twitch import Twitch
@@ -11,7 +11,6 @@ from src.TTSengine.engine import speak
 
 from src.gui.ui_mainwindow import Ui_MainWindow
 
-
 with open('config.json', 'r') as f:
     config = json.load(f)
 
@@ -21,8 +20,8 @@ USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
 TARGET_CHANNEL = config['Channel']
 
 
-
-class MainWindow(QMainWindow):
+class TTS(QThread):
+    finished = Signal()
 
     def print_debug(self, append):
         print("DEBUG: " + str(append))
@@ -39,41 +38,46 @@ class MainWindow(QMainWindow):
         else:
             self.print_debug("Ignoring command: " + msg.text)
 
-    async def run(self):
-        self.print_debug("Connecting to channel: " + TARGET_CHANNEL)
-        twitch = await Twitch(APP_ID, APP_SECRET)
-        auth = UserAuthenticator(twitch, USER_SCOPE)
-        token, refresh_token = await auth.authenticate()
-        await twitch.set_user_authentication(token, USER_SCOPE, refresh_token)
+    def run(self):
+        async def runTTS():
+            self.print_debug("Connecting to channel: " + TARGET_CHANNEL)
+            twitch = await Twitch(APP_ID, APP_SECRET)
+            auth = UserAuthenticator(twitch, USER_SCOPE)
+            token, refresh_token = await auth.authenticate()
+            await twitch.set_user_authentication(token, USER_SCOPE, refresh_token)
 
-        chat = await Chat(twitch)
+            chat = await Chat(twitch)
 
-        chat.register_event(ChatEvent.READY, self.on_ready)
-        chat.register_event(ChatEvent.MESSAGE, self.on_message)
+            chat.register_event(ChatEvent.READY, self.on_ready)
+            chat.register_event(ChatEvent.MESSAGE, self.on_message)
 
-        chat.start()
-        self.print_debug("Connected!")
+            chat.start()
+            self.print_debug("Connected!")
 
-        try:
-            input('press ENTER to stop\n')
-        finally:
-            self.print_debug("stopping...")
-            chat.stop()
-            await twitch.close()
+            try:
+                input('press ENTER to stop\n')
+            finally:
+                self.print_debug("stopping...")
+                self.finished.emit()
+                chat.stop()
+                await twitch.close()
+        asyncio.run(runTTS())
 
+class MainWindow(QMainWindow):
     def __init__(self, parent=None):
+        self.tts = None
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
         self.ui.pushButton.clicked.connect(self.start_tts)
 
     @Slot()
-    async def start_tts(self):
-        # asyncio.create_task(self.run())
-        self.ui.listWidget.addItem("Connecting")
-        self.print_debug("TTS started!")
+    def start_tts(self):
+        print("Starting TTS...")
+        self.tts = TTS()
+        self.tts.finished.connect(self.thread_finished)
+        self.tts.start()
 
-
-
-
+    def thread_finished(self):
+        self.tts.quit()
+        self.tts.wait()

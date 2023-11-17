@@ -13,5 +13,11 @@ async def main():
     sys.exit(app.exec())
 
 
+# if __name__ == "__main__":
+#     asyncio.run(main())
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
