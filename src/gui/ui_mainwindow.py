@@ -15,30 +15,40 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QListWidget, QListWidgetItem, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QToolBar, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QListWidget, QListWidgetItem,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QStatusBar, QToolBar, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(700, 432)
+        MainWindow.resize(690, 518)
         self.centralWidget = QWidget(MainWindow)
         self.centralWidget.setObjectName(u"centralWidget")
-        self.pushButton = QPushButton(self.centralWidget)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(10, 280, 201, 81))
-        self.pushButton_2 = QPushButton(self.centralWidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(570, 270, 80, 24))
+        self.gridLayout = QGridLayout(self.centralWidget)
+        self.gridLayout.setSpacing(6)
+        self.gridLayout.setContentsMargins(11, 11, 11, 11)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.listWidget = QListWidget(self.centralWidget)
         self.listWidget.setObjectName(u"listWidget")
-        self.listWidget.setGeometry(QRect(30, 10, 621, 251))
+
+        self.gridLayout.addWidget(self.listWidget, 0, 0, 1, 2)
+
+        self.startButton = QPushButton(self.centralWidget)
+        self.startButton.setObjectName(u"startButton")
+
+        self.gridLayout.addWidget(self.startButton, 1, 0, 1, 1)
+
+        self.configButton = QPushButton(self.centralWidget)
+        self.configButton.setObjectName(u"configButton")
+
+        self.gridLayout.addWidget(self.configButton, 1, 1, 1, 1)
+
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QMenuBar(MainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 700, 21))
+        self.menuBar.setGeometry(QRect(0, 0, 690, 21))
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QToolBar(MainWindow)
         self.mainToolBar.setObjectName(u"mainToolBar")
@@ -54,7 +64,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"start", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"configure", None))
+        self.startButton.setText(QCoreApplication.translate("MainWindow", u"start", None))
+        self.configButton.setText(QCoreApplication.translate("MainWindow", u"configure", None))
     # retranslateUi
 

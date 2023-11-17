@@ -5,10 +5,13 @@ from twitchAPI.twitch import Twitch
 from twitchAPI.oauth import UserAuthenticator
 from twitchAPI.type import AuthScope, ChatEvent
 from twitchAPI.chat import Chat, EventData, ChatMessage
+
 import asyncio
 import json
+
 from src.TTSengine.engine import speak
 
+from src.TTSengine.configWindow import ConfigWindow
 from src.gui.ui_mainwindow import Ui_MainWindow
 
 with open('config.json', 'r') as f:
@@ -42,7 +45,7 @@ class TTS(QThread):
     async def on_message(self, msg: ChatMessage):
         if msg.text[0] != '!':
             to_say = msg.user.name + ": " + msg.text
-            self.worker.print_debug("Saying: " + to_say)
+            self.worker.print_debug(to_say)
             speak(to_say)
         else:
             self.worker.print_debug("Ignoring command: " + msg.text)
@@ -79,11 +82,20 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.pushButton.clicked.connect(self.start_tts)
+        self.ui.startButton.clicked.connect(self.start_tts)
+        self.ui.configButton.clicked.connect(self.open_config_window)
 
         self.worker = UpdateListWorker()
         self.tts = TTS(self.worker)
         self.worker.item_added.connect(self.update_list_widget)
+
+        self.config_window = None
+
+    @Slot()
+    def open_config_window(self):
+        if not self.config_window or not self.config_window.isVisible():
+            self.config_window = ConfigWindow(self)
+            self.config_window.show()
 
     @Slot()
     def start_tts(self):
@@ -97,3 +109,5 @@ class MainWindow(QMainWindow):
     def thread_finished(self):
         self.tts.quit()
         self.tts.wait()
+
+
