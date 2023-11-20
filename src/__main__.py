@@ -1,5 +1,4 @@
 import sys
-import asyncio
 
 from PySide6.QtWidgets import QApplication
 from src.TTSengine.TTSmain import MainWindow
