@@ -1,6 +1,9 @@
 # TwitchPyTTS
 Powered by PyTwitchAPI and gTTS
 
+This is a simple application that will read out the chat of a twitch channel using text to speech
+Currently WIP
+
 ## Running from source
 ### Prerequisites 
 Clone the git repo
@@ -14,48 +17,24 @@ Create a venv
 ```bash
 python -m venv .
 ```
-Enter the venv
+Enter the venv (on linux)
 ```bash
 source bin/activate
 ```
-
+Enter the venv (on windows)
+```dos
+.\Scripts\activate.bat
+```
 Install the required packages
 ```bash
 pip -r requirements.txt
 ```
 
-
 ### Running the application
 Create an application on dev.twitch.tv, make sure to add `http://localhost:17563` as an allowed URL
 
-Edit the `config.json` file
-```json
-{
-  "AppID": "",
-  "AppSecret": "",
-  "Channel": ""
-}
-```
-Channel can be any channel you want to listen to
-
-While in the venv, run `main.py`
+While in the venv, run `__main__.py`
 ```bash
-python src/mainWindow.py
+python src/__main__.py
 ```
-
-## Running from release
-Go to the releases tab and donwload the latest binary for your OS
-
-Create an application on dev.twitch.tv, make sure to add `http://localhost:17563` as an allowed URL
-
-Create the `config.json` file in the same directory as the binary
-```json
-{
-  "AppID": "",
-  "AppSecret": "",
-  "Channel": ""
-}
-```
-Channel can be any channel you want to listen to
-
-Run the binary
+Click on configure before hitting start, and enter your client id and secret from the application you created on dev.twitch.tv
