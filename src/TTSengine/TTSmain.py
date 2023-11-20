@@ -44,12 +44,12 @@ class TTS(QThread):
         self.worker.print_debug("ready!")
 
     async def on_message(self, msg: ChatMessage):
+        to_say = msg.user.name + ": " + msg.text
         if msg.text[0] != '!':
-            to_say = msg.user.name + ": " + msg.text
             self.worker.print_debug(to_say)
             speak(to_say)
         else:
-            self.worker.print_debug("Ignoring command: " + msg.text)
+            self.worker.print_debug("Ignoring command: " + to_say)
 
     def run(self):
         async def runTTS():
