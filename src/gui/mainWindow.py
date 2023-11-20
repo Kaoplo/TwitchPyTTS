@@ -8,6 +8,7 @@ from src.TTSengine.TTS import UpdateListWorker, TTS
 
 
 class MainWindow(QMainWindow):
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
@@ -19,6 +20,8 @@ class MainWindow(QMainWindow):
         self.tts = TTS(self.worker)
         self.worker.item_added.connect(self.update_list_widget)
 
+        self.tts.ready.connect(self.ready)
+
         self.config_window = None
 
     @Slot()
@@ -29,13 +32,23 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def start_tts(self):
-        self.tts.finished.connect(self.thread_finished)
-        self.tts.start()
+        # This is probably not the best solution to this, but it seems to be working perfectly fine.
+        if self.tts.isRunning():
+            self.ui.startButton.setText("stopping...")
+            self.ui.startButton.setEnabled(False)
+            self.tts.stop_request.emit()
+            self.tts.wait()
+            self.ui.startButton.setText("start")
+            self.ui.startButton.setEnabled(True)
+        else:
+            self.ui.startButton.setText("stop")
+            self.ui.startButton.setEnabled(False)
+            self.tts.start()
 
     def update_list_widget(self, text):
         item = QListWidgetItem(text)
         self.ui.listWidget.addItem(item)
 
-    def thread_finished(self):
-        self.tts.quit()
-        self.tts.wait()
+    def ready(self):
+        self.ui.startButton.setText("stop")
+        self.ui.startButton.setEnabled(True)

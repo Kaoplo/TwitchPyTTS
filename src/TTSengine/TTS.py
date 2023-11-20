@@ -28,11 +28,17 @@ class UpdateListWorker(QObject):
 
 
 class TTS(QThread):
-    finished = Signal()
+    stop_request = Signal()
+    ready = Signal()
 
     def __init__(self, worker):
         super().__init__()
         self.worker = worker
+        self.stop_request.connect(self.stop)
+        self.stop_requested = False
+
+    def stop(self):
+        self.stop_requested = True
 
     async def on_ready(self, ready_event: EventData):
         await ready_event.chat.join_room(TARGET_CHANNEL)
@@ -61,13 +67,15 @@ class TTS(QThread):
 
             chat.start()
             self.worker.print_debug("Connected!")
+            self.ready.emit()
 
             try:
-                input('press ENTER to stop\n')
+                while not self.stop_requested:
+                    await asyncio.sleep(1)
+
             finally:
                 self.worker.print_debug("stopping...")
-                self.finished.emit()
-                chat.stop()
+                await chat.stop()
                 await twitch.close()
                 self.worker.print_debug("stopped!")
         asyncio.run(runTTS())
