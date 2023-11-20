@@ -31,6 +31,7 @@ class UpdateListWorker(QObject):
         self.item_added.emit(str(append))
 
 
+# TODO: Move this to a separate file
 class TTS(QThread):
     finished = Signal()
 
@@ -109,5 +110,3 @@ class MainWindow(QMainWindow):
     def thread_finished(self):
         self.tts.quit()
         self.tts.wait()
-
-
