@@ -1,9 +1,8 @@
 import json
 
-from PySide6.QtCore import Slot, QThread, Signal, QObject
-from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from PySide6.QtWidgets import QMainWindow
 
-from src.gui.ui_configwindow import Ui_ConfigWindow
+from src.gui.ui.ui_configwindow import Ui_ConfigWindow
 
 
 class ConfigWindow(QMainWindow, Ui_ConfigWindow):

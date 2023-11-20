@@ -21,7 +21,7 @@ source bin/activate
 
 Install the required packages
 ```bash
-pip install twitchapi gTTS pyside6
+pip -r requirements.txt
 ```
 
 
@@ -40,7 +40,7 @@ Channel can be any channel you want to listen to
 
 While in the venv, run `main.py`
 ```bash
-python src/TTSmain.py
+python src/mainWindow.py
 ```
 
 ## Running from release

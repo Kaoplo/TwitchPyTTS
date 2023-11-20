@@ -1,18 +1,14 @@
-from PySide6.QtCore import Slot, QThread, Signal, QObject
-from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from PySide6.QtCore import QObject, Signal, QThread
+
+from src.TTSengine.engine import speak
 
 from twitchAPI.twitch import Twitch
 from twitchAPI.oauth import UserAuthenticator
 from twitchAPI.type import AuthScope, ChatEvent
 from twitchAPI.chat import Chat, EventData, ChatMessage
 
-import asyncio
 import json
-
-from src.TTSengine.engine import speak
-
-from src.TTSengine.configWindow import ConfigWindow
-from src.gui.ui_mainwindow import Ui_MainWindow
+import asyncio
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -31,7 +27,6 @@ class UpdateListWorker(QObject):
         self.item_added.emit(str(append))
 
 
-# TODO: Move this to a separate file
 class TTS(QThread):
     finished = Signal()
 
@@ -76,37 +71,3 @@ class TTS(QThread):
                 await twitch.close()
                 self.worker.print_debug("stopped!")
         asyncio.run(runTTS())
-
-
-class MainWindow(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.ui.startButton.clicked.connect(self.start_tts)
-        self.ui.configButton.clicked.connect(self.open_config_window)
-
-        self.worker = UpdateListWorker()
-        self.tts = TTS(self.worker)
-        self.worker.item_added.connect(self.update_list_widget)
-
-        self.config_window = None
-
-    @Slot()
-    def open_config_window(self):
-        if not self.config_window or not self.config_window.isVisible():
-            self.config_window = ConfigWindow(self)
-            self.config_window.show()
-
-    @Slot()
-    def start_tts(self):
-        self.tts.finished.connect(self.thread_finished)
-        self.tts.start()
-
-    def update_list_widget(self, text):
-        item = QListWidgetItem(text)
-        self.ui.listWidget.addItem(item)
-
-    def thread_finished(self):
-        self.tts.quit()
-        self.tts.wait()
