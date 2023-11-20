@@ -1,3 +1,5 @@
+import json
+
 from PySide6.QtCore import Slot, QThread, Signal, QObject
 from PySide6.QtWidgets import QMainWindow, QListWidgetItem
 
@@ -12,6 +14,13 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         self.show()
 
         self.ui.closeButton.clicked.connect(self.closeEvent)
+
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+
+        self.ui.appID.setText(config['AppID'])
+        self.ui.appSecret.setText(config['AppSecret'])
+        self.ui.targetChannel.setText(config['Channel'])
 
     def closeEvent(self, event):
         appID = self.ui.appID.text()
