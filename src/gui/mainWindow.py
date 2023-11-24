@@ -40,9 +40,11 @@ class MainWindow(QMainWindow):
             self.tts.wait()
             self.ui.startButton.setText("start")
             self.ui.startButton.setEnabled(True)
+            self.ui.configButton.setEnabled(True)
         else:
             self.ui.startButton.setText("stop")
             self.ui.startButton.setEnabled(False)
+            self.ui.configButton.setEnabled(False)
             self.tts.start()
 
     def update_list_widget(self, text):

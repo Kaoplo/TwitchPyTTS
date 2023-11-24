@@ -10,6 +10,7 @@ from twitchAPI.chat import Chat, EventData, ChatMessage
 import json
 import asyncio
 
+
 class UpdateListWorker(QObject):
     item_added = Signal(str)
 
@@ -26,7 +27,6 @@ class TTS(QThread):
         super().__init__()
         self.worker = worker
         self.stop_request.connect(self.stop)
-        self.stop_requested = False
 
     def get_config(self):
         with open('config.json', 'r') as f:
@@ -54,6 +54,7 @@ class TTS(QThread):
 
     def run(self):
         async def runTTS():
+            self.stop_requested = False
             self.get_config()
             if self.APP_ID == "" or self.APP_SECRET == "" or self.TARGET_CHANNEL == "":
                 self.worker.print_debug("Hit configure, before starting!")
