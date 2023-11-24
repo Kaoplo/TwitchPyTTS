@@ -10,15 +10,6 @@ from twitchAPI.chat import Chat, EventData, ChatMessage
 import json
 import asyncio
 
-with open('config.json', 'r') as f:
-    config = json.load(f)
-
-APP_ID = config['AppID']
-APP_SECRET = config['AppSecret']
-USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
-TARGET_CHANNEL = config['Channel']
-
-
 class UpdateListWorker(QObject):
     item_added = Signal(str)
 
@@ -37,11 +28,20 @@ class TTS(QThread):
         self.stop_request.connect(self.stop)
         self.stop_requested = False
 
+    def get_config(self):
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+        self.APP_ID = config['AppID']
+        self.APP_SECRET = config['AppSecret']
+        self.USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
+        self.TARGET_CHANNEL = config['Channel']
+        f.close()
+
     def stop(self):
         self.stop_requested = True
 
     async def on_ready(self, ready_event: EventData):
-        await ready_event.chat.join_room(TARGET_CHANNEL)
+        await ready_event.chat.join_room(self.TARGET_CHANNEL)
         self.worker.print_debug("ready!")
 
     async def on_message(self, msg: ChatMessage):
@@ -54,11 +54,15 @@ class TTS(QThread):
 
     def run(self):
         async def runTTS():
-            self.worker.print_debug("Connecting to channel: " + TARGET_CHANNEL)
-            twitch = await Twitch(APP_ID, APP_SECRET)
-            auth = UserAuthenticator(twitch, USER_SCOPE)
+            self.get_config()
+            if self.APP_ID == "" or self.APP_SECRET == "" or self.TARGET_CHANNEL == "":
+                self.worker.print_debug("Hit configure, before starting!")
+                return
+            self.worker.print_debug("Connecting to channel: " + self.TARGET_CHANNEL)
+            twitch = await Twitch(self.APP_ID, self.APP_SECRET)
+            auth = UserAuthenticator(twitch, self.USER_SCOPE)
             token, refresh_token = await auth.authenticate()
-            await twitch.set_user_authentication(token, USER_SCOPE, refresh_token)
+            await twitch.set_user_authentication(token, self.USER_SCOPE, refresh_token)
 
             chat = await Chat(twitch)
 
@@ -75,7 +79,7 @@ class TTS(QThread):
 
             finally:
                 self.worker.print_debug("stopping...")
-                await chat.stop()
+                chat.stop()
                 await twitch.close()
                 self.worker.print_debug("stopped!")
         asyncio.run(runTTS())
