@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.worker.item_added.connect(self.update_list_widget)
 
         self.tts.ready.connect(self.ready)
-
+        
         self.config_window = None
 
     @Slot()
