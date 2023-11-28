@@ -12,7 +12,8 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         self.ui.setupUi(self)
         self.show()
 
-        self.ui.closeButton.clicked.connect(self.closeEvent)
+        self.ui.closeButton.clicked.connect(self.save)
+        self.ui.cancelButton.clicked.connect(self.cancel)
 
         with open('config.json', 'r') as f:
             config = json.load(f)
@@ -22,11 +23,14 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         self.ui.targetChannel.setText(config['Channel'])
         f.close()
 
-    def closeEvent(self, event):
+    def save(self):
         appID = self.ui.appID.text()
         appSecret = self.ui.appSecret.text()
         channel = self.ui.targetChannel.text()
         with open('config.json', 'w') as f:
             f.write('{\n"AppID": "' + appID + '",\n "AppSecret": "' + appSecret + '",\n "Channel": "' + channel + '"\n}')
         f.close()
+        self.close()
+
+    def cancel(self):
         self.close()

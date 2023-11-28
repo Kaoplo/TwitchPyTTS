@@ -5,12 +5,25 @@ from src.gui.configWindow import ConfigWindow
 from src.gui.ui.ui_mainwindow import Ui_MainWindow
 
 from src.TTSengine.TTS import UpdateListWorker, TTS
+import json
+import os
+
+config_file_path = "config.json"
+
+
+def check_config():
+    if not os.path.isfile(config_file_path):
+        print("No config file found, creating one...")
+        with open(config_file_path, 'w') as f:
+            json.dump({"AppID": "", "AppSecret": "", "Channel": ""}, f, indent=4)
+            f.close()
 
 
 class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        check_config()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.startButton.clicked.connect(self.start_tts)
@@ -54,3 +67,4 @@ class MainWindow(QMainWindow):
     def ready(self):
         self.ui.startButton.setText("stop")
         self.ui.startButton.setEnabled(True)
+
