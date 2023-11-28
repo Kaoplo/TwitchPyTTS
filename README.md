@@ -53,3 +53,4 @@ While in the venv, run `__main__.py`
 python src/__main__.py
 ```
 Click on configure before hitting start, and enter your client id and secret from the application you created on https://dev.twitch.tv
+
