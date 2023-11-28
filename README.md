@@ -39,15 +39,6 @@ pip -r requirements.txt
 ### Running the application
 Create an application on https://dev.twitch.tv, make sure to add `http://localhost:17563` as an allowed URL
 
-Currently, the application does not create a `config.json` file for you, so you will have to create it yourself
-```json
-{
-    "client_id": "",
-    "client_secret": "",
-    "redirect_uri": ""
-}
-```
-
 While in the venv, run `__main__.py`
 ```bash
 python src/__main__.py
