@@ -11,6 +11,19 @@ import json
 import asyncio
 
 
+def parse_config(message, username):
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        pronunciation = config['pronunciation']
+        f.close()
+    out = pronunciation
+    if '{username}' in pronunciation:
+        out = out.replace('{username}', username)
+    if '{message}' in pronunciation:
+        out = out.replace('{message}', message)
+    return out
+
+
 class UpdateListWorker(QObject):
     item_added = Signal(str)
 
@@ -35,6 +48,7 @@ class TTS(QThread):
         self.APP_SECRET = config['AppSecret']
         self.USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
         self.TARGET_CHANNEL = config['Channel']
+        self.pronunciation = config['pronunciation']
         f.close()
 
     def stop(self):
@@ -45,12 +59,12 @@ class TTS(QThread):
         self.worker.print_debug("ready!")
 
     async def on_message(self, msg: ChatMessage):
-        to_say = msg.user.name + ": " + msg.text
+        message = f'{msg.user.name}: {msg.text}'
         if msg.text[0] != '!':
-            self.worker.print_debug(to_say)
-            speak(to_say)
+            self.worker.print_debug(message)
+            speak(parse_config(msg.text, msg.user.name))
         else:
-            self.worker.print_debug("Ignoring command: " + to_say)
+            self.worker.print_debug("Ignoring command: " + message)
 
     def run(self):
         async def runTTS():

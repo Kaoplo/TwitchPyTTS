@@ -21,14 +21,16 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         self.ui.appID.setText(config['AppID'])
         self.ui.appSecret.setText(config['AppSecret'])
         self.ui.targetChannel.setText(config['Channel'])
+        self.ui.pronounciation.setText(config['pronunciation'])
         f.close()
 
     def save(self):
         appID = self.ui.appID.text()
         appSecret = self.ui.appSecret.text()
         channel = self.ui.targetChannel.text()
+        pronunciation = self.ui.pronounciation.text()
         with open('config.json', 'w') as f:
-            f.write('{\n"AppID": "' + appID + '",\n "AppSecret": "' + appSecret + '",\n "Channel": "' + channel + '"\n}')
+            f.write('{\n"AppID": "' + appID + '",\n"AppSecret": "' + appSecret + '",\n"Channel": "' + channel + '",\n"pronunciation": "' + pronunciation + '"\n}')
         f.close()
         self.close()
 
