@@ -32,7 +32,7 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         pronunciation = self.ui.pronounciation.text()
         ignorelist = self.ui.ignorelist.text()
         with open('config.json', 'w') as f:
-            f.write('{\n"AppID": "' + appID + '",\n"AppSecret": "' + appSecret + '",\n"Channel": "' + channel + '",\n"pronunciation": "' + pronunciation + '",\n"ignorelist": "' + ignorelist + '"\n}')
+            json.dump({"AppID": appID, "AppSecret": appSecret, "Channel": channel, "pronunciation": pronunciation, "ignorelist": ignorelist}, f, indent=4)
         f.close()
         self.close()
 
