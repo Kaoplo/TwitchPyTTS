@@ -4,6 +4,18 @@ Powered by PyTwitchAPI and gTTS
 This is a simple application that will read out the chat of a twitch channel using text to speech
 Currently WIP
 
+## Features/TODO
+- [x] Read out chat
+- [x] Ignore commands
+- [x] Ignore user list
+- [x] GUI
+- [x] Configurable
+- [] Add anonymous chat login (currently requires a twitch application)
+- [] Add support for multiple channels
+- [] Add support for multiple languages
+- [] Add support for multiple voices
+- [] Add support for multiple tts engines
+
 ## Running from source
 ### Prerequisites 
 Clone the git repo
