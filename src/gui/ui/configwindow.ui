@@ -33,13 +33,13 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Login</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>-1</x>
@@ -111,7 +111,7 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>TTS</string>
        </attribute>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
@@ -124,9 +124,9 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QLabel" name="prounciatioLabel">
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Ignorelist</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -134,7 +134,31 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="pronounciation"/>
+          <widget class="QLineEdit" name="ignorelist">
+           <property name="placeholderText">
+            <string>nightbot, streamelements, streamlabs, ...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="prounciatioLabel">
+           <property name="text">
+            <string>Pronunciation</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="pronounciation">
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="placeholderText">
+            <string>{username} said: {message}</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

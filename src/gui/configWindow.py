@@ -22,6 +22,7 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         self.ui.appSecret.setText(config['AppSecret'])
         self.ui.targetChannel.setText(config['Channel'])
         self.ui.pronounciation.setText(config['pronunciation'])
+        self.ui.ignorelist.setText(config['ignorelist'])
         f.close()
 
     def save(self):
@@ -29,8 +30,9 @@ class ConfigWindow(QMainWindow, Ui_ConfigWindow):
         appSecret = self.ui.appSecret.text()
         channel = self.ui.targetChannel.text()
         pronunciation = self.ui.pronounciation.text()
+        ignorelist = self.ui.ignorelist.text()
         with open('config.json', 'w') as f:
-            f.write('{\n"AppID": "' + appID + '",\n"AppSecret": "' + appSecret + '",\n"Channel": "' + channel + '",\n"pronunciation": "' + pronunciation + '"\n}')
+            f.write('{\n"AppID": "' + appID + '",\n"AppSecret": "' + appSecret + '",\n"Channel": "' + channel + '",\n"pronunciation": "' + pronunciation + '",\n"ignorelist": "' + ignorelist + '"\n}')
         f.close()
         self.close()
 

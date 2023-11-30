@@ -11,7 +11,7 @@ import json
 import asyncio
 
 
-def parse_config(message, username):
+def parse_config_pronunciation(message, username):
     with open('config.json', 'r') as f:
         config = json.load(f)
         pronunciation = config['pronunciation']
@@ -22,6 +22,13 @@ def parse_config(message, username):
     if '{message}' in pronunciation:
         out = out.replace('{message}', message)
     return out
+
+def get_ignorelist():
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        ignorelist = config['ignorelist'].split(', ')
+        f.close()
+    return ignorelist
 
 
 class UpdateListWorker(QObject):
@@ -60,9 +67,10 @@ class TTS(QThread):
 
     async def on_message(self, msg: ChatMessage):
         message = f'{msg.user.name}: {msg.text}'
+        self.worker.print_debug(message)
         if msg.text[0] != '!':
-            self.worker.print_debug(message)
-            speak(parse_config(msg.text, msg.user.name))
+            if msg.user.name not in get_ignorelist():
+                speak(parse_config_pronunciation(msg.text, msg.user.name))
         else:
             self.worker.print_debug("Ignoring command: " + message)
 

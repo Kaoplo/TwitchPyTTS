@@ -41,43 +41,43 @@ class Ui_ConfigWindow(object):
         self.tabWidget.setObjectName(u"tabWidget")
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
-        self.widget = QWidget(self.tab)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(-1, -1, 451, 171))
-        self.verticalLayout = QVBoxLayout(self.widget)
+        self.layoutWidget = QWidget(self.tab)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(-1, -1, 451, 171))
+        self.verticalLayout = QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.label_3 = QLabel(self.widget)
+        self.label_3 = QLabel(self.layoutWidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
 
         self.verticalLayout.addWidget(self.label_3)
 
-        self.appID = QLineEdit(self.widget)
+        self.appID = QLineEdit(self.layoutWidget)
         self.appID.setObjectName(u"appID")
 
         self.verticalLayout.addWidget(self.appID)
 
-        self.label_2 = QLabel(self.widget)
+        self.label_2 = QLabel(self.layoutWidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.appSecret = QLineEdit(self.widget)
+        self.appSecret = QLineEdit(self.layoutWidget)
         self.appSecret.setObjectName(u"appSecret")
 
         self.verticalLayout.addWidget(self.appSecret)
 
-        self.label = QLabel(self.widget)
+        self.label = QLabel(self.layoutWidget)
         self.label.setObjectName(u"label")
         self.label.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
 
         self.verticalLayout.addWidget(self.label)
 
-        self.targetChannel = QLineEdit(self.widget)
+        self.targetChannel = QLineEdit(self.layoutWidget)
         self.targetChannel.setObjectName(u"targetChannel")
 
         self.verticalLayout.addWidget(self.targetChannel)
@@ -93,6 +93,17 @@ class Ui_ConfigWindow(object):
         self.verticalLayout_2.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.label_4 = QLabel(self.verticalLayoutWidget)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
+
+        self.verticalLayout_2.addWidget(self.label_4)
+
+        self.ignorelist = QLineEdit(self.verticalLayoutWidget)
+        self.ignorelist.setObjectName(u"ignorelist")
+
+        self.verticalLayout_2.addWidget(self.ignorelist)
+
         self.prounciatioLabel = QLabel(self.verticalLayoutWidget)
         self.prounciatioLabel.setObjectName(u"prounciatioLabel")
         self.prounciatioLabel.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
@@ -101,6 +112,7 @@ class Ui_ConfigWindow(object):
 
         self.pronounciation = QLineEdit(self.verticalLayoutWidget)
         self.pronounciation.setObjectName(u"pronounciation")
+        self.pronounciation.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
 
         self.verticalLayout_2.addWidget(self.pronounciation)
 
@@ -139,7 +151,7 @@ class Ui_ConfigWindow(object):
 
         self.retranslateUi(ConfigWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(ConfigWindow)
@@ -157,9 +169,12 @@ class Ui_ConfigWindow(object):
         self.targetChannel.setToolTip(QCoreApplication.translate("ConfigWindow", u"<html><head/><body><p>This can be any channel you want</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.targetChannel.setText("")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("ConfigWindow", u"Tab 1", None))
-        self.prounciatioLabel.setText(QCoreApplication.translate("ConfigWindow", u"TextLabel", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("ConfigWindow", u"Tab 2", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("ConfigWindow", u"Login", None))
+        self.label_4.setText(QCoreApplication.translate("ConfigWindow", u"Ignorelist", None))
+        self.ignorelist.setPlaceholderText(QCoreApplication.translate("ConfigWindow", u"nightbot, streamelements, streamlabs, ...", None))
+        self.prounciatioLabel.setText(QCoreApplication.translate("ConfigWindow", u"Pronunciation", None))
+        self.pronounciation.setPlaceholderText(QCoreApplication.translate("ConfigWindow", u"{username} said: {message}", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("ConfigWindow", u"TTS", None))
         self.closeButton.setText(QCoreApplication.translate("ConfigWindow", u"Done", None))
         self.cancelButton.setText(QCoreApplication.translate("ConfigWindow", u"Cancel", None))
         self.menuConfigure.setTitle(QCoreApplication.translate("ConfigWindow", u"Configure", None))

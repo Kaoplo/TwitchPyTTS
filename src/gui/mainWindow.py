@@ -3,8 +3,8 @@ from PySide6.QtWidgets import QMainWindow, QListWidgetItem
 
 from src.gui.configWindow import ConfigWindow
 from src.gui.ui.ui_mainwindow import Ui_MainWindow
-
 from src.TTSengine.TTS import UpdateListWorker, TTS
+
 import json
 import os
 
@@ -15,7 +15,7 @@ def check_config():
     if not os.path.isfile(config_file_path):
         print("No config file found, creating one...")
         with open(config_file_path, 'w') as f:
-            json.dump({"AppID": "", "AppSecret": "", "Channel": ""}, f, indent=4)
+            json.dump({"AppID": "", "AppSecret": "", "Channel": "", "pronunciation": "", "ignorelist": ""}, f, indent=4)
             f.close()
 
 
@@ -65,4 +65,3 @@ class MainWindow(QMainWindow):
     def ready(self):
         self.ui.startButton.setText("stop")
         self.ui.startButton.setEnabled(True)
-
