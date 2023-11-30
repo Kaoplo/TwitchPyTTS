@@ -10,11 +10,11 @@ Currently WIP
 - [x] Ignore user list
 - [x] GUI
 - [x] Configurable
-- [] Add anonymous chat login (currently requires a twitch application)
-- [] Add support for multiple channels
-- [] Add support for multiple languages
-- [] Add support for multiple voices
-- [] Add support for multiple tts engines
+- [ ] Add anonymous chat login (currently requires a twitch application)
+- [ ] Add support for multiple channels
+- [ ] Add support for multiple languages
+- [ ] Add support for multiple voices
+- [ ] Add support for multiple tts engines
 
 ## Running from source
 ### Prerequisites 
