@@ -20,7 +20,6 @@ def check_config():
 
 
 class MainWindow(QMainWindow):
-
     def __init__(self, parent=None):
         super().__init__(parent)
         check_config()
@@ -45,7 +44,6 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def start_tts(self):
-        # This is probably not the best solution to this, but it seems to be working perfectly fine.
         if self.tts.isRunning():
             self.ui.startButton.setText("stopping...")
             self.ui.startButton.setEnabled(False)
@@ -53,16 +51,13 @@ class MainWindow(QMainWindow):
             self.tts.wait()
             self.ui.startButton.setText("start")
             self.ui.startButton.setEnabled(True)
-            self.ui.configButton.setEnabled(True)
         else:
             self.ui.startButton.setText("stop")
             self.ui.startButton.setEnabled(False)
-            self.ui.configButton.setEnabled(False)
             self.tts.start()
 
     def update_list_widget(self, text):
-        item = QListWidgetItem(text)
-        self.ui.listWidget.addItem(item)
+        self.ui.listWidget.addItem(QListWidgetItem(text))
 
     def ready(self):
         self.ui.startButton.setText("stop")
