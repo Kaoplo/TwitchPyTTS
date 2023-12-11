@@ -87,34 +87,3 @@ class TTS(QThread):
             self.worker.print_debug("stopping...")
             twitch.close()
             self.worker.print_debug("stopped!")
-        # async def runTTS():
-        #     self.stop_requested = False
-        #     self.get_config()
-        #     if self.APP_ID == "" or self.APP_SECRET == "" or self.TARGET_CHANNEL == "":
-        #         self.worker.print_debug("Hit configure, before starting!")
-        #         return
-        #     self.worker.print_debug("Connecting to channel: " + self.TARGET_CHANNEL)
-        #     twitch = await Twitch(self.APP_ID, self.APP_SECRET)
-        #     auth = UserAuthenticator(twitch, self.USER_SCOPE)
-        #     token, refresh_token = await auth.authenticate()
-        #     await twitch.set_user_authentication(token, self.USER_SCOPE, refresh_token)
-        #
-        #     chat = await Chat(twitch)
-        #
-        #     chat.register_event(ChatEvent.READY, self.on_ready)
-        #     chat.register_event(ChatEvent.MESSAGE, self.on_message)
-        #
-        #     chat.start()
-        #     self.worker.print_debug("Connected!")
-        #     self.ready.emit()
-        #
-        #     try:
-        #         while not self.stop_requested:
-        #             await asyncio.sleep(1)
-        #
-        #     finally:
-        #         self.worker.print_debug("stopping...")
-        #         chat.stop()
-        #         await twitch.close()
-        #         self.worker.print_debug("stopped!")
-        # asyncio.run(runTTS())

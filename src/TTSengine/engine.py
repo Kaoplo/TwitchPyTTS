@@ -2,8 +2,11 @@ import gtts
 from playsound import playsound
 import os
 
+filepath = 'voice.mp3'
+
 
 def speak(message):
     tts = gtts.gTTS(message)
-    tts.save('voice.mp3')
-    playsound('voice.mp3')
+    tts.save(filepath)
+    playsound(filepath)
+    os.remove(filepath)
