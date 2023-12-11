@@ -1,14 +1,9 @@
 from PySide6.QtCore import QObject, Signal, QThread
 
 from src.TTSengine.engine import speak
-
-from twitchAPI.twitch import Twitch
-from twitchAPI.oauth import UserAuthenticator
-from twitchAPI.type import AuthScope, ChatEvent
-from twitchAPI.chat import Chat, EventData, ChatMessage
+from src.twitch.twitchapi import Twitch
 
 import json
-import asyncio
 
 
 def parse_config_pronunciation(message, username):
@@ -22,6 +17,7 @@ def parse_config_pronunciation(message, username):
     if '{message}' in pronunciation:
         out = out.replace('{message}', message)
     return out
+
 
 def get_ignorelist():
     with open('config.json', 'r') as f:
@@ -47,62 +43,78 @@ class TTS(QThread):
         super().__init__()
         self.worker = worker
         self.stop_request.connect(self.stop)
+        self.stop_requested = False
+
+        self.pronunciation = ""
+        self.TARGET_CHANNEL = ""
 
     def get_config(self):
         with open('config.json', 'r') as f:
             config = json.load(f)
-        self.APP_ID = config['AppID']
-        self.APP_SECRET = config['AppSecret']
-        self.USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
-        self.TARGET_CHANNEL = config['Channel']
         self.pronunciation = config['pronunciation']
+        self.TARGET_CHANNEL = config['Channel']
         f.close()
 
     def stop(self):
         self.stop_requested = True
 
-    async def on_ready(self, ready_event: EventData):
-        await ready_event.chat.join_room(self.TARGET_CHANNEL)
-        self.worker.print_debug("ready!")
-
-    async def on_message(self, msg: ChatMessage):
-        message = f'{msg.user.name}: {msg.text}'
-        self.worker.print_debug(message)
-        if msg.text[0] != '!':
-            if msg.user.name not in get_ignorelist():
-                speak(parse_config_pronunciation(msg.text, msg.user.name))
+    def on_message(self, message):
+        msg = f'{message["username"]}: {message["message"]}'
+        self.worker.print_debug(msg)
+        if msg[0] != '!':
+            if message["username"] not in get_ignorelist():
+                speak(parse_config_pronunciation(message["message"], message["username"]))
         else:
             self.worker.print_debug("Ignoring command: " + message)
 
     def run(self):
-        async def runTTS():
-            self.stop_requested = False
-            self.get_config()
-            if self.APP_ID == "" or self.APP_SECRET == "" or self.TARGET_CHANNEL == "":
-                self.worker.print_debug("Hit configure, before starting!")
-                return
-            self.worker.print_debug("Connecting to channel: " + self.TARGET_CHANNEL)
-            twitch = await Twitch(self.APP_ID, self.APP_SECRET)
-            auth = UserAuthenticator(twitch, self.USER_SCOPE)
-            token, refresh_token = await auth.authenticate()
-            await twitch.set_user_authentication(token, self.USER_SCOPE, refresh_token)
+        self.stop_requested = False
+        self.get_config()
+        if self.TARGET_CHANNEL == "":
+            self.worker.print_debug("Hit configure, before starting!")
+            return
+        self.worker.print_debug("Connecting to channel: " + self.TARGET_CHANNEL)
+        twitch = Twitch()
+        twitch.connect(self.TARGET_CHANNEL)
+        twitch.register_event(self.on_message)
+        self.worker.print_debug("Connected!")
+        self.ready.emit()
 
-            chat = await Chat(twitch)
-
-            chat.register_event(ChatEvent.READY, self.on_ready)
-            chat.register_event(ChatEvent.MESSAGE, self.on_message)
-
-            chat.start()
-            self.worker.print_debug("Connected!")
-            self.ready.emit()
-
-            try:
-                while not self.stop_requested:
-                    await asyncio.sleep(1)
-
-            finally:
-                self.worker.print_debug("stopping...")
-                chat.stop()
-                await twitch.close()
-                self.worker.print_debug("stopped!")
-        asyncio.run(runTTS())
+        try:
+            while not self.stop_requested:
+                pass
+        finally:
+            self.worker.print_debug("stopping...")
+            twitch.close()
+            self.worker.print_debug("stopped!")
+        # async def runTTS():
+        #     self.stop_requested = False
+        #     self.get_config()
+        #     if self.APP_ID == "" or self.APP_SECRET == "" or self.TARGET_CHANNEL == "":
+        #         self.worker.print_debug("Hit configure, before starting!")
+        #         return
+        #     self.worker.print_debug("Connecting to channel: " + self.TARGET_CHANNEL)
+        #     twitch = await Twitch(self.APP_ID, self.APP_SECRET)
+        #     auth = UserAuthenticator(twitch, self.USER_SCOPE)
+        #     token, refresh_token = await auth.authenticate()
+        #     await twitch.set_user_authentication(token, self.USER_SCOPE, refresh_token)
+        #
+        #     chat = await Chat(twitch)
+        #
+        #     chat.register_event(ChatEvent.READY, self.on_ready)
+        #     chat.register_event(ChatEvent.MESSAGE, self.on_message)
+        #
+        #     chat.start()
+        #     self.worker.print_debug("Connected!")
+        #     self.ready.emit()
+        #
+        #     try:
+        #         while not self.stop_requested:
+        #             await asyncio.sleep(1)
+        #
+        #     finally:
+        #         self.worker.print_debug("stopping...")
+        #         chat.stop()
+        #         await twitch.close()
+        #         self.worker.print_debug("stopped!")
+        # asyncio.run(runTTS())

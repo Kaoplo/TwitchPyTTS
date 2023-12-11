@@ -2,8 +2,6 @@ import socket
 import random
 import re
 import threading
-import asyncio
-import time
 
 server = 'irc.chat.twitch.tv'
 port = 6667
@@ -63,22 +61,3 @@ class Twitch:
             pass
         elif len(resp) > 0:
             self._notify_event(self._parse_message(resp))
-
-def on_message(message):
-    print(f'{message["username"]} said: {message["message"]}')
-
-
-async def run():
-    ttv = Twitch()
-    channel = 'kaoplo'
-
-    ttv.connect(channel)
-
-    ttv.register_event(on_message)
-
-    try:
-        input("press enter to stop\n")
-    finally:
-        ttv.close()
-
-asyncio.run(run())
