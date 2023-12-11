@@ -15,7 +15,7 @@ def check_config():
     if not os.path.isfile(config_file_path):
         print("No config file found, creating one...")
         with open(config_file_path, 'w') as f:
-            json.dump({"AppID": "", "AppSecret": "", "Channel": "", "pronunciation": "", "ignorelist": ""}, f, indent=4)
+            json.dump({"Channel": "", "pronunciation": "", "ignorelist": ""}, f, indent=4)
             f.close()
 
 
