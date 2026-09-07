@@ -224,7 +224,7 @@ class MainWindow(QMainWindow):
             self._log(f"{message.username} used the skip command.")
             logger.info("Skip requested by %s", message.username)
             if self.speech_worker is not None:
-                self.speech_worker.skip_current()
+                self.skip_requested.emit()
         elif outcome is CommandOutcome.SKIP_DENIED:
             self._log(f"{message.username} tried to skip but isn't a mod.")
             logger.info("Skip denied for %s", message.username)
