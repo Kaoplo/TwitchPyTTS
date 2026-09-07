@@ -14,20 +14,23 @@ concurrency:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu:20.04
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Install System Dependencies & Python 3.12
-        env:
-          DEBIAN_FRONTEND: noninteractive
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install System C/C++ & Qt Dependencies
         run: |
-          apt-get update && apt-get install -y \
-            software-properties-common \
+          sudo apt-get update && sudo apt-get install -y \
             build-essential \
             ccache \
-            git \
             patchelf \
             zstd \
             libgl1-mesa-glx \
@@ -36,29 +39,15 @@ jobs:
             libdbus-1-3 \
             libxcb-cursor0
 
-          # Add deadsnakes PPA for Python 3.12 on Ubuntu 20.04
-          add-apt-repository -y ppa:deadsnakes/ppa
-          apt-get update && apt-get install -y \
-            python3.12 \
-            python3.12-venv \
-            python3.12-dev
-
-      - name: Check Out Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Virtual Environment & Dependencies
+      - name: Install Python Dependencies
         run: |
-          # Use python3.12 explicitly to build the venv
-          python3.12 -m venv .venv
-          . .venv/bin/activate
-          pip install --upgrade pip setuptools wheel
-          pip install nuitka
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install nuitka
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
 
       - name: Build Binary with Nuitka
         run: |
-          . .venv/bin/activate
-          python3 -m nuitka \
+          python -m nuitka \
             --onefile \
             --standalone \
             --main=src \
@@ -71,7 +60,7 @@ jobs:
             --noinclude-qt-translations \
             --include-package-data=piper \
             --include-package-data=onnxruntime \
-            --include-data-dir=$(python3 -c "import piper, os; print(os.path.dirname(piper.__file__))")/espeak-ng-data=espeak-ng-data
+            --include-data-dir=$(python -c "import piper, os; print(os.path.dirname(piper.__file__))")/espeak-ng-data=espeak-ng-data
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
