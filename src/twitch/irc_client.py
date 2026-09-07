@@ -128,7 +128,7 @@ class IrcClient(QObject):
         while self._running:
             try:
                 chunk = sock.recv(4096)
-            except socket.timeout:
+            except TimeoutError:
                 if time.monotonic() - last_data_at > 6 * 60:
                     raise OSError("no data from Twitch for 6 minutes")
                 logger.debug("IRC idle; waiting for more data")
@@ -191,4 +191,4 @@ class IrcClient(QObject):
     @staticmethod
     def _send(sock: socket.socket, line: str):
         logger.debug("IRC send: %s", line)
-        sock.sendall(f"{line}\r\n".encode("utf-8"))
+        sock.sendall(f"{line}\r\n".encode())

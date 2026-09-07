@@ -2,7 +2,7 @@ import unittest
 
 from src.app_config import AppConfig
 from src.core.chat_message import ChatMessage
-from src.core.commands import evaluate_command, CommandOutcome
+from src.core.commands import CommandOutcome, evaluate_command
 
 
 def make_config(**overrides) -> AppConfig:

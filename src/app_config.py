@@ -9,8 +9,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import dataclass, asdict, field
-from typing import List
+from dataclasses import asdict, dataclass, field
 
 CONFIG_PATH = "config.json"
 
@@ -22,7 +21,7 @@ DEFAULT_VOICE_MODEL = "en_US-lessac-medium"
 class AppConfig:
     channel: str = ""
     pronunciation: str = "{username} says {message}"
-    ignore_list: List[str] = field(default_factory=list)
+    ignore_list: list[str] = field(default_factory=list)
 
     # Chat-command settings (feature: moderator can interrupt the TTS)
     command_prefix: str = "!"
@@ -34,19 +33,19 @@ class AppConfig:
     speech_volume: float = 1.0
 
     @classmethod
-    def load(cls, path: str = CONFIG_PATH) -> "AppConfig":
+    def load(cls, path: str = CONFIG_PATH) -> AppConfig:
         if not os.path.isfile(path):
             cfg = cls()
             cfg.save(path)
             return cfg
 
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             raw = json.load(f)
 
         return cls._from_raw(raw)
 
     @classmethod
-    def _from_raw(cls, raw: dict) -> "AppConfig":
+    def _from_raw(cls, raw: dict) -> AppConfig:
         """Accepts both the new schema and the legacy
         ``{"Channel", "pronunciation", "ignorelist"}`` schema used by the
         original app, so upgrading doesn't wipe out a user's config."""
