@@ -20,13 +20,12 @@ jobs:
       - name: Check Out Repository
         uses: actions/checkout@v4
 
-      - name: Install Ruff
-        uses: ruff-action/setup-ruff@v1
+      - name: Run Ruff Checks
+        uses: astral-sh/ruff-action@v3
         with:
-          version: "latest"
-
-      - name: Run Ruff Linter
-        run: ruff check .
+          args: "check ."
 
       - name: Run Ruff Format Check
-        run: ruff format --check .
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: "format --check ."
