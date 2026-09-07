@@ -54,7 +54,6 @@ jobs:
             --output-filename=twitchpytts \
             --remove-output \
             --lto=yes \
-            --c_flags=-s \
             --disable-console \
             --enable-plugin=pyside6 \
             --noinclude-qt-translations \
