@@ -5,6 +5,7 @@ Piper voices are named ``<lang>_<REGION>-<voice>-<quality>``, e.g.
 model plus a JSON config - this is the "small AI voice model" the app reads
 chat with, running fully offline once downloaded.
 """
+
 from __future__ import annotations
 
 import os
@@ -30,4 +31,7 @@ def voice_download_urls(voice_name: str) -> tuple[str, str]:
     lang = lang_region.split("_")[0]
     onnx_name, json_name = voice_file_names(voice_name)
     dir_path = f"{lang}/{lang_region}/{voice}/{quality}"
-    return f"{HF_BASE_URL}/{dir_path}/{onnx_name}", f"{HF_BASE_URL}/{dir_path}/{json_name}"
+    return (
+        f"{HF_BASE_URL}/{dir_path}/{onnx_name}",
+        f"{HF_BASE_URL}/{dir_path}/{json_name}",
+    )

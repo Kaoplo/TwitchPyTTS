@@ -4,6 +4,7 @@ Kept free of sockets/threads so the (fiddly, easy to get subtly wrong) parts
 of IRC parsing can be unit tested directly. ``irc_client.py`` is the thin
 networking layer that feeds real socket data through these functions.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -35,7 +36,9 @@ def split_lines(buffer: str):
     to the next chunk read from the socket.
     """
     parts = buffer.split("\r\n")
-    remainder = parts.pop()  # last element is "" if buffer ended cleanly, else a partial line
+    remainder = (
+        parts.pop()
+    )  # last element is "" if buffer ended cleanly, else a partial line
     return parts, remainder
 
 
@@ -70,7 +73,9 @@ def parse_line(raw: str) -> Optional[IrcLine]:
     command = head_parts[0]
     params = head_parts[1:]
 
-    return IrcLine(tags=tags, prefix=prefix, command=command, params=params, trailing=trailing)
+    return IrcLine(
+        tags=tags, prefix=prefix, command=command, params=params, trailing=trailing
+    )
 
 
 def badges_from_tags(tags: Dict[str, str]):

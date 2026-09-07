@@ -4,6 +4,7 @@ Kept dependency-free (no Qt, no networking) so it can be constructed and
 compared from any layer (twitch parsing, tts queue, gui) and unit tested
 in isolation.
 """
+
 from __future__ import annotations
 
 import itertools

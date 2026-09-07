@@ -25,12 +25,20 @@ class ConfigWindow(QMainWindow):
 
     def save(self):
         self.config.channel = self.ui.targetChannel.text().strip()
-        self.config.pronunciation = self.ui.pronounciation.text() or self.config.pronunciation
+        self.config.pronunciation = (
+            self.ui.pronounciation.text() or self.config.pronunciation
+        )
         self.config.ignore_list = [
-            name.strip() for name in self.ui.ignorelist.text().split(",") if name.strip()
+            name.strip()
+            for name in self.ui.ignorelist.text().split(",")
+            if name.strip()
         ]
-        self.config.voice_model = self.ui.voiceModel.text().strip() or self.config.voice_model
-        self.config.skip_command = self.ui.skipCommand.text().strip() or self.config.skip_command
+        self.config.voice_model = (
+            self.ui.voiceModel.text().strip() or self.config.voice_model
+        )
+        self.config.skip_command = (
+            self.ui.skipCommand.text().strip() or self.config.skip_command
+        )
         self.config.mod_only_skip = self.ui.modOnlySkip.isChecked()
         self.config.save()
         self.close()

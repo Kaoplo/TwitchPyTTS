@@ -14,6 +14,7 @@ Talks to the rest of the app purely through signals/slots:
         being read" highlight in the UI
   out - speech_error(str): surfaced in the UI log
 """
+
 from __future__ import annotations
 
 import logging

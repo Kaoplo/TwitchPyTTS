@@ -19,7 +19,9 @@ from src.twitch.irc_client import IrcClient
 
 HIGHLIGHT_BACKGROUND = QBrush(QColor("#3a7bd5"))
 HIGHLIGHT_FOREGROUND = QBrush(QColor("#ffffff"))
-DEFAULT_BACKGROUND = QBrush()  # empty brush -> item falls back to the view's normal background
+DEFAULT_BACKGROUND = (
+    QBrush()
+)  # empty brush -> item falls back to the view's normal background
 DEFAULT_FOREGROUND = QBrush()
 
 logger = logging.getLogger(__name__)
@@ -37,7 +39,11 @@ class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.config = AppConfig.load()
-        logger.info("Loaded config for channel #%s using voice model %s", self.config.channel or "<unset>", self.config.voice_model)
+        logger.info(
+            "Loaded config for channel #%s using voice model %s",
+            self.config.channel or "<unset>",
+            self.config.voice_model,
+        )
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -71,7 +77,12 @@ class MainWindow(QMainWindow):
     def _start(self):
         logger.info("Start requested")
         self.config = AppConfig.load()
-        logger.debug("Reloaded config: channel=%r voice_model=%r speech_volume=%s", self.config.channel, self.config.voice_model, self.config.speech_volume)
+        logger.debug(
+            "Reloaded config: channel=%r voice_model=%r speech_volume=%s",
+            self.config.channel,
+            self.config.voice_model,
+            self.config.speech_volume,
+        )
         if not self.config.channel:
             self._log("Hit configure before starting - no channel set.")
             logger.info("Start aborted because no channel is configured")
@@ -122,16 +133,24 @@ class MainWindow(QMainWindow):
 
     def _start_speech_worker(self):
         engine_factory = partial(
-            PiperEngine, voice_name=self.config.voice_model, progress=self._log_from_any_thread
+            PiperEngine,
+            voice_name=self.config.voice_model,
+            progress=self._log_from_any_thread,
         )
-        logger.debug("Creating speech worker for voice model %s", self.config.voice_model)
+        logger.debug(
+            "Creating speech worker for voice model %s", self.config.voice_model
+        )
         self.speech_worker = SpeechQueueWorker(engine_factory, self.config)
         self.speech_thread = QThread(self)
         self.speech_worker.moveToThread(self.speech_thread)
 
         self.speech_start_requested.connect(self.speech_worker.run, Qt.QueuedConnection)
-        self.speech_worker.message_started.connect(self._on_message_started, Qt.QueuedConnection)
-        self.speech_worker.message_finished.connect(self._on_message_finished, Qt.QueuedConnection)
+        self.speech_worker.message_started.connect(
+            self._on_message_started, Qt.QueuedConnection
+        )
+        self.speech_worker.message_finished.connect(
+            self._on_message_finished, Qt.QueuedConnection
+        )
         self.speech_worker.speech_error.connect(self._log, Qt.QueuedConnection)
         self.speech_worker.log.connect(self._log, Qt.QueuedConnection)
 
@@ -150,9 +169,13 @@ class MainWindow(QMainWindow):
         self.irc_client.moveToThread(self.irc_thread)
 
         self.irc_start_requested.connect(self.irc_client.start, Qt.QueuedConnection)
-        self.irc_client.message_received.connect(self._queue_chat_message, Qt.QueuedConnection)
+        self.irc_client.message_received.connect(
+            self._queue_chat_message, Qt.QueuedConnection
+        )
         self.irc_client.status_changed.connect(self._log, Qt.QueuedConnection)
-        self.irc_client.connection_error.connect(self._on_connection_error, Qt.QueuedConnection)
+        self.irc_client.connection_error.connect(
+            self._on_connection_error, Qt.QueuedConnection
+        )
         self.irc_thread.finished.connect(self.irc_client.deleteLater)
 
         self.irc_thread.start()
@@ -188,7 +211,9 @@ class MainWindow(QMainWindow):
             self._process_chat_message(message)
 
     def _process_chat_message(self, message: ChatMessage):
-        logger.debug("Processing chat message id=%s user=%s", message.id, message.username)
+        logger.debug(
+            "Processing chat message id=%s user=%s", message.id, message.username
+        )
         item = QListWidgetItem(message.display())
         self._items_by_message_id[message.id] = item
         self.ui.listWidget.addItem(item)

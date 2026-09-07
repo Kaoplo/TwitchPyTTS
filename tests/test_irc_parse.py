@@ -40,7 +40,9 @@ class SplitLinesTests(unittest.TestCase):
 
 class ParseLineTests(unittest.TestCase):
     def test_plain_privmsg(self):
-        line = parse_line(":user123!user123@user123.tmi.twitch.tv PRIVMSG #channel :hello world")
+        line = parse_line(
+            ":user123!user123@user123.tmi.twitch.tv PRIVMSG #channel :hello world"
+        )
         self.assertEqual(line.command, "PRIVMSG")
         self.assertEqual(line.username, "user123")
         self.assertEqual(line.params, ["#channel"])

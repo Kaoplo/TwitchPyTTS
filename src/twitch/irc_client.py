@@ -20,6 +20,7 @@ module finishes that off properly:
 Runs as a QObject moved to its own QThread (started from the GUI layer),
 communicating back via signals only - it never touches the UI directly.
 """
+
 from __future__ import annotations
 
 import logging
@@ -69,8 +70,12 @@ class IrcClient(QObject):
                     break
                 logger.warning("IRC connection error: %s", exc)
                 self.connection_error.emit(str(exc))
-                delay = RECONNECT_BACKOFF_SECONDS[min(attempt, len(RECONNECT_BACKOFF_SECONDS) - 1)]
-                self.status_changed.emit(f"Connection lost ({exc}). Reconnecting in {delay}s...")
+                delay = RECONNECT_BACKOFF_SECONDS[
+                    min(attempt, len(RECONNECT_BACKOFF_SECONDS) - 1)
+                ]
+                self.status_changed.emit(
+                    f"Connection lost ({exc}). Reconnecting in {delay}s..."
+                )
                 attempt += 1
                 self._sleep_while_running(delay)
         self.status_changed.emit("Disconnected")
@@ -136,7 +141,11 @@ class IrcClient(QObject):
             logger.debug("Received %s bytes from Twitch IRC", len(chunk))
             buffer += chunk.decode("utf-8", errors="ignore")
             lines, buffer = irc_parse.split_lines(buffer)
-            logger.debug("Parsed %s complete IRC lines; %s bytes buffered", len(lines), len(buffer))
+            logger.debug(
+                "Parsed %s complete IRC lines; %s bytes buffered",
+                len(lines),
+                len(buffer),
+            )
             for raw_line in lines:
                 self._handle_line(sock, raw_line)
 
@@ -171,7 +180,9 @@ class IrcClient(QObject):
             # Only pass id= when Twitch actually gave us one (tags capability
             # granted) - otherwise let ChatMessage's default_factory mint a
             # local id, since passing id="" would defeat that default.
-            message = ChatMessage(id=msg_id, **kwargs) if msg_id else ChatMessage(**kwargs)
+            message = (
+                ChatMessage(id=msg_id, **kwargs) if msg_id else ChatMessage(**kwargs)
+            )
             logger.info("Received chat message from %s", line.username)
             self.message_received.emit(message)
         else:
