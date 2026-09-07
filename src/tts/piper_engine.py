@@ -5,6 +5,7 @@ typically 20-60MB and runs comfortably on CPU in real time, which is exactly
 the profile this app needs (many short chat messages, no cloud round trip,
 no API key). This replaces the old gTTS-over-the-network engine.
 """
+
 from __future__ import annotations
 
 import logging
@@ -30,12 +31,17 @@ class VoiceModelError(RuntimeError):
 def _download_file(url: str, destination_path: str):
     """Download a file with a bounded timeout so a stalled network cannot hang forever."""
     logger.debug("Downloading %s -> %s", url, destination_path)
-    with urllib.request.urlopen(url, timeout=30) as response, open(destination_path, "wb") as destination:
+    with (
+        urllib.request.urlopen(url, timeout=30) as response,
+        open(destination_path, "wb") as destination,
+    ):
         shutil.copyfileobj(response, destination)
     logger.debug("Finished downloading %s", destination_path)
 
 
-def ensure_voice_files(voice_name: str, voices_dir: str = VOICES_DIR, progress=None) -> tuple[str, str]:
+def ensure_voice_files(
+    voice_name: str, voices_dir: str = VOICES_DIR, progress=None
+) -> tuple[str, str]:
     """Return (onnx_path, json_path) for a voice, downloading it first if
     it isn't on disk yet. `progress(message)` is called with human-readable
     status updates (e.g. to forward into the GUI's log)."""
@@ -64,7 +70,9 @@ def ensure_voice_files(voice_name: str, voices_dir: str = VOICES_DIR, progress=N
         if not os.path.isfile(onnx_path):
             logger.info("Voice model missing for %s", voice_name)
             if progress:
-                progress(f"Downloading voice model {voice_name} (this only happens once)...")
+                progress(
+                    f"Downloading voice model {voice_name} (this only happens once)..."
+                )
             _download_file(onnx_url, onnx_path)
         else:
             logger.debug("Voice model already cached for %s", voice_name)
@@ -90,7 +98,9 @@ class PiperEngine(VoiceEngine):
 
         logger.info("Initializing Piper engine for voice %s", voice_name)
         logger.debug("PiperEngine using voices_dir=%s", voices_dir)
-        onnx_path, json_path = ensure_voice_files(voice_name, voices_dir, progress=progress)
+        onnx_path, json_path = ensure_voice_files(
+            voice_name, voices_dir, progress=progress
+        )
         logger.debug("Loading Piper voice from onnx=%s json=%s", onnx_path, json_path)
         self._voice = PiperVoice.load(onnx_path, config_path=json_path, use_cuda=False)
         self._sample_rate = getattr(self._voice.config, "sample_rate", 22050)

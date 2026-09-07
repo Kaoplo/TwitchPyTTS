@@ -1,0 +1,32 @@
+name: Lint & Code Style
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+
+      - name: Install Ruff
+        uses: ruff-action/setup-ruff@v1
+        with:
+          version: "latest"
+
+      - name: Run Ruff Linter
+        run: ruff check .
+
+      - name: Run Ruff Format Check
+        run: ruff format --check .

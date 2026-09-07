@@ -4,6 +4,7 @@ Replaces the ad-hoc ``json.load(open('config.json'))`` calls that used to be
 scattered across TTS.py / configWindow.py. Every other module talks to an
 ``AppConfig`` instance instead of touching the file directly.
 """
+
 from __future__ import annotations
 
 import json
@@ -74,7 +75,9 @@ class AppConfig:
             json.dump(asdict(self), f, indent=4)
 
     def format_message(self, message: str, username: str) -> str:
-        return self.pronunciation.replace("{username}", username).replace("{message}", message)
+        return self.pronunciation.replace("{username}", username).replace(
+            "{message}", message
+        )
 
     def is_ignored(self, username: str) -> bool:
         return username.lower() in (name.lower() for name in self.ignore_list)

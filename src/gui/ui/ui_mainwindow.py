@@ -8,63 +8,106 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QListWidget, QListWidgetItem,
-    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QToolBar, QWidget)
+from PySide6.QtCore import (
+    QCoreApplication,
+    QDate,
+    QDateTime,
+    QLocale,
+    QMetaObject,
+    QObject,
+    QPoint,
+    QRect,
+    QSize,
+    QTime,
+    QUrl,
+    Qt,
+)
+from PySide6.QtGui import (
+    QBrush,
+    QColor,
+    QConicalGradient,
+    QCursor,
+    QFont,
+    QFontDatabase,
+    QGradient,
+    QIcon,
+    QImage,
+    QKeySequence,
+    QLinearGradient,
+    QPainter,
+    QPalette,
+    QPixmap,
+    QRadialGradient,
+    QTransform,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QGridLayout,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMenuBar,
+    QPushButton,
+    QSizePolicy,
+    QStatusBar,
+    QToolBar,
+    QWidget,
+)
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
+            MainWindow.setObjectName("MainWindow")
         MainWindow.resize(690, 518)
         self.centralWidget = QWidget(MainWindow)
-        self.centralWidget.setObjectName(u"centralWidget")
+        self.centralWidget.setObjectName("centralWidget")
         self.gridLayout = QGridLayout(self.centralWidget)
         self.gridLayout.setSpacing(6)
         self.gridLayout.setContentsMargins(11, 11, 11, 11)
-        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setObjectName("gridLayout")
         self.listWidget = QListWidget(self.centralWidget)
-        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setObjectName("listWidget")
 
         self.gridLayout.addWidget(self.listWidget, 0, 0, 1, 2)
 
         self.startButton = QPushButton(self.centralWidget)
-        self.startButton.setObjectName(u"startButton")
+        self.startButton.setObjectName("startButton")
 
         self.gridLayout.addWidget(self.startButton, 1, 0, 1, 1)
 
         self.configButton = QPushButton(self.centralWidget)
-        self.configButton.setObjectName(u"configButton")
+        self.configButton.setObjectName("configButton")
 
         self.gridLayout.addWidget(self.configButton, 1, 1, 1, 1)
 
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QMenuBar(MainWindow)
-        self.menuBar.setObjectName(u"menuBar")
+        self.menuBar.setObjectName("menuBar")
         self.menuBar.setGeometry(QRect(0, 0, 690, 21))
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QToolBar(MainWindow)
-        self.mainToolBar.setObjectName(u"mainToolBar")
+        self.mainToolBar.setObjectName("mainToolBar")
         MainWindow.addToolBar(Qt.TopToolBarArea, self.mainToolBar)
         self.statusBar = QStatusBar(MainWindow)
-        self.statusBar.setObjectName(u"statusBar")
+        self.statusBar.setObjectName("statusBar")
         MainWindow.setStatusBar(self.statusBar)
 
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.startButton.setText(QCoreApplication.translate("MainWindow", u"start", None))
-        self.configButton.setText(QCoreApplication.translate("MainWindow", u"configure", None))
-    # retranslateUi
+        MainWindow.setWindowTitle(
+            QCoreApplication.translate("MainWindow", "MainWindow", None)
+        )
+        self.startButton.setText(
+            QCoreApplication.translate("MainWindow", "start", None)
+        )
+        self.configButton.setText(
+            QCoreApplication.translate("MainWindow", "configure", None)
+        )
 
+    # retranslateUi

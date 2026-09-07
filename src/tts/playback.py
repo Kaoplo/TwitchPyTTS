@@ -5,6 +5,7 @@ with no way to cut it short - there was no way to implement "moderator
 interrupts the TTS" on top of it. sounddevice gives us `sd.stop()`, which
 kills whatever's currently playing right away.
 """
+
 from __future__ import annotations
 
 import threading
