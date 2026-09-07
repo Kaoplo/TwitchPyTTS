@@ -7,23 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>471</width>
-    <height>282</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>471</width>
-    <height>282</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>471</width>
-    <height>282</height>
+    <height>430</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Configure</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -37,7 +31,7 @@
      <number>9</number>
     </property>
     <property name="bottomMargin">
-     <number>0</number>
+     <number>9</number>
     </property>
     <property name="spacing">
      <number>0</number>
@@ -49,9 +43,6 @@
         <property name="text">
          <string>Channel</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-        </property>
        </widget>
       </item>
       <item>
@@ -60,43 +51,50 @@
       <item>
        <widget class="QLabel" name="pronounciationText">
         <property name="text">
-         <string>Pronounciation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         <string>Pronounciation (use {username} and {message})</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="pronounciation">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="pronounciation"/>
       </item>
       <item>
        <widget class="QLabel" name="IgnorelistText">
         <property name="text">
-         <string>Ignorelist</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         <string>Ignorelist (comma separated usernames)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="ignorelist">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QLineEdit" name="ignorelist"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="voiceModelText">
+        <property name="text">
+         <string>Voice model (Piper voice name)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="voiceModel"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="skipCommandText">
+        <property name="text">
+         <string>Mod skip command (without the ! prefix)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="skipCommand"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="modOnlySkip">
+        <property name="text">
+         <string>Only allow moderators/broadcaster to use the skip command</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -126,11 +124,6 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionjkl">
-   <property name="text">
-    <string>jkl;</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
