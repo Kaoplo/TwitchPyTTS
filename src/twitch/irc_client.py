@@ -191,4 +191,4 @@ class IrcClient(QObject):
     @staticmethod
     def _send(sock: socket.socket, line: str):
         logger.debug("IRC send: %s", line)
-        sock.send(f"{line}\r\n".encode("utf-8"))
+        sock.sendall(f"{line}\r\n".encode("utf-8"))
