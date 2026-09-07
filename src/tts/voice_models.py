@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import os
 
-HF_BASE_URL = "https://huggingface.co/rhasspy/piper-voices/resolve/main"
+HF_BASE_URL = "https://huggingface.co/rhasspy/piper-voices/tree/main"
 
 
 def voice_file_names(voice_name: str) -> tuple[str, str]:
