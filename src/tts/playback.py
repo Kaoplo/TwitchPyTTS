@@ -20,6 +20,8 @@ POLL_INTERVAL_SECONDS = 0.02
 class InterruptiblePlayer:
     def __init__(self):
         self._stop_event = threading.Event()
+        self._state_lock = threading.Lock()
+        self._is_playing = False
 
     def play(self, samples: np.ndarray, sample_rate: int, volume: float = 1.0):
         """Blocks until playback finishes or `interrupt()` is called."""
@@ -28,19 +30,27 @@ class InterruptiblePlayer:
         if volume != 1.0:
             audio = audio * max(0.0, min(volume, 2.0))
 
+        with self._state_lock:
+            self._is_playing = True
+
         sd.play(audio, samplerate=sample_rate)
         try:
             while True:
-                stream = sd.get_stream()
-                if stream is None or not stream.active:
-                    break
                 if self._stop_event.is_set():
-                    sd.stop()
+                    break
+                try:
+                    stream = sd.get_stream()
+                except Exception:
+                    break
+                if stream is None or not stream.active:
                     break
                 time.sleep(POLL_INTERVAL_SECONDS)
         finally:
-            pass
+            with self._state_lock:
+                self._is_playing = False
 
     def interrupt(self):
         self._stop_event.set()
-        sd.stop()
+        with self._state_lock:
+            if self._is_playing:
+                sd.stop()

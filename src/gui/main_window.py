@@ -155,7 +155,11 @@ class MainWindow(QMainWindow):
         self.speech_worker.log.connect(self._log, Qt.QueuedConnection)
 
         self.speak_requested.connect(self.speech_worker.enqueue_message)
-        self.skip_requested.connect(self.speech_worker.skip_current)
+        # skip_current only interrupts playback, so a direct connection is safe
+        # here and avoids waiting on the worker's message loop.
+        self.skip_requested.connect(
+            self.speech_worker.skip_current, Qt.DirectConnection
+        )
         self.speech_thread.finished.connect(self.speech_worker.deleteLater)
 
         self.speech_thread.start()
@@ -223,8 +227,7 @@ class MainWindow(QMainWindow):
         if outcome is CommandOutcome.SKIP_REQUESTED:
             self._log(f"{message.username} used the skip command.")
             logger.info("Skip requested by %s", message.username)
-            if self.speech_worker is not None:
-                self.skip_requested.emit()
+            self.skip_requested.emit()
         elif outcome is CommandOutcome.SKIP_DENIED:
             self._log(f"{message.username} tried to skip but isn't a mod.")
             logger.info("Skip denied for %s", message.username)
