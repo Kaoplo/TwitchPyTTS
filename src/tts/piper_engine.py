@@ -76,7 +76,7 @@ def ensure_voice_files(
             _download_file(onnx_url, onnx_path)
         else:
             logger.debug("Voice model already cached for %s", voice_name)
-    except (OSError, URLError) as exc:
+    except (OSError, URLError, ValueError) as exc:
         logger.exception("Voice file preparation failed for %s", voice_name)
         raise VoiceModelError(
             f"Could not download voice '{voice_name}': {exc}. "
