@@ -1,10 +1,10 @@
 import unittest
 
 from src.twitch.irc_parse import (
-    split_lines,
-    parse_line,
     badges_from_tags,
     make_anonymous_nick,
+    parse_line,
+    split_lines,
 )
 
 

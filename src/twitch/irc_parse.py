@@ -7,20 +7,19 @@ networking layer that feeds real socket data through these functions.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, Optional
+from dataclasses import dataclass
 
 
 @dataclass
 class IrcLine:
-    tags: Dict[str, str]
-    prefix: Optional[str]
+    tags: dict[str, str]
+    prefix: str | None
     command: str
     params: list
-    trailing: Optional[str]
+    trailing: str | None
 
     @property
-    def username(self) -> Optional[str]:
+    def username(self) -> str | None:
         if not self.prefix:
             return None
         return self.prefix.split("!")[0]
@@ -42,13 +41,13 @@ def split_lines(buffer: str):
     return parts, remainder
 
 
-def parse_line(raw: str) -> Optional[IrcLine]:
+def parse_line(raw: str) -> IrcLine | None:
     """Parse a single (already newline-stripped) IRC line, tags included."""
     if not raw:
         return None
 
     rest = raw
-    tags: Dict[str, str] = {}
+    tags: dict[str, str] = {}
     if rest.startswith("@"):
         tag_part, _, rest = rest.partition(" ")
         for pair in tag_part[1:].split(";"):
@@ -78,7 +77,7 @@ def parse_line(raw: str) -> Optional[IrcLine]:
     )
 
 
-def badges_from_tags(tags: Dict[str, str]):
+def badges_from_tags(tags: dict[str, str]):
     """Returns (is_mod, is_broadcaster) from a PRIVMSG's IRCv3 tags."""
     badges = tags.get("badges", "")
     badge_names = {b.split("/")[0] for b in badges.split(",") if b}

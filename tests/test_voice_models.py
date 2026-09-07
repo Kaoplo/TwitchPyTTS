@@ -1,6 +1,6 @@
 import unittest
 
-from src.tts.voice_models import voice_paths, voice_download_urls
+from src.tts.voice_models import voice_download_urls, voice_paths
 
 
 class VoiceModelsTests(unittest.TestCase):

@@ -24,8 +24,8 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 from src.app_config import AppConfig
 from src.core.chat_message import ChatMessage
-from src.tts.playback import InterruptiblePlayer
 from src.tts.piper_engine import VoiceModelError
+from src.tts.playback import InterruptiblePlayer
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class SpeechQueueWorker(QObject):
         self._engine = None
         self._config = config
         self._player = InterruptiblePlayer()
-        self._queue: "queue.Queue[ChatMessage]" = queue.Queue()
+        self._queue: queue.Queue[ChatMessage] = queue.Queue()
         self._running = False
         logger.debug("SpeechQueueWorker created")
 

@@ -4,13 +4,13 @@ import logging
 import queue
 from functools import partial
 
-from PySide6.QtCore import QThread, QTimer, Qt, Signal, Slot
+from PySide6.QtCore import Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 
 from src.app_config import AppConfig
 from src.core.chat_message import ChatMessage
-from src.core.commands import evaluate_command, CommandOutcome
+from src.core.commands import CommandOutcome, evaluate_command
 from src.core.speech_queue_worker import SpeechQueueWorker
 from src.gui.config_window import ConfigWindow
 from src.gui.ui.ui_mainwindow import Ui_MainWindow

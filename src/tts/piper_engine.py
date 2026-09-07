@@ -29,7 +29,8 @@ class VoiceModelError(RuntimeError):
 
 
 def _download_file(url: str, destination_path: str):
-    """Download a file with a bounded timeout so a stalled network cannot hang forever."""
+    """Download a file with a bounded timeout
+    so a stalled network cannot hang forever."""
     logger.debug("Downloading %s -> %s", url, destination_path)
     with (
         urllib.request.urlopen(url, timeout=30) as response,
