@@ -83,6 +83,7 @@ Click **configure**, set the channel you want to read out loud, then hit
 voice model.
 
 ### Running the tests
+
 ```bash
 python -m unittest discover -s tests
 ```
