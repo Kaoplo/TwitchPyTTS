@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 """
 Building the binary on GitHub Actions causes a certificate error to appear because it
-bundles the certificates for that specific machine which does not work on all environemnts
+bundles the certificates for that specific machine which does not work on all
+environemnts
 """
 def configure_ssl_certs():
     system_paths = [
