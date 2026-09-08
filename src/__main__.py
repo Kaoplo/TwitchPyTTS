@@ -14,6 +14,8 @@ Building the binary on GitHub Actions causes a certificate error to appear becau
 bundles the certificates for that specific machine which does not work on all
 environemnts
 """
+
+
 def configure_ssl_certs():
     system_paths = [
         "/etc/ssl/certs/ca-certificates.crt",
@@ -33,7 +35,6 @@ def configure_ssl_certs():
     # 2. Fall back to bundled certifi if host system has no detectable CA store
     os.environ["SSL_CERT_FILE"] = certifi.where()
     logger.info("Local certificate not found, falling back to certifi")
-
 
 
 if __name__ == "__main__":
