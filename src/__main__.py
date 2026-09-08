@@ -9,13 +9,10 @@ from src.gui.main_window import MainWindow
 
 logger = logging.getLogger(__name__)
 
-"""
-Building the binary on GitHub Actions causes a certificate error to appear because it
-bundles the certificates for that specific machine which does not work on all
-environemnts
-"""
 
-
+# Building the binary on GitHub Actions causes a certificate error to appear because it
+# bundles the certificates for that specific machine which does not work on all
+# environments
 def configure_ssl_certs():
     existing = os.environ.get("SSL_CERT_FILE")
     if existing and os.path.exists(existing):
