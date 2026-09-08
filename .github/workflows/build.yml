@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - nightly
   pull_request:
     branches:
       - main
+      - nightly
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
