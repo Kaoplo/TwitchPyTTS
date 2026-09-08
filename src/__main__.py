@@ -17,6 +17,11 @@ environemnts
 
 
 def configure_ssl_certs():
+    existing = os.environ.get("SSL_CERT_FILE")
+    if existing and os.path.exists(existing):
+        logger.debug("SSL_CERT_FILE already set to %s", existing)
+        return
+
     system_paths = [
         "/etc/ssl/certs/ca-certificates.crt",
         "/etc/pki/tls/certs/ca-bundle.crt",
