@@ -8,7 +8,6 @@ build:
 		--output-filename=twitchpytts \
 		--remove-output \
 		--lto=yes \
-		--strip \
 		--disable-console \
 		--enable-plugin=pyside6 \
 		--noinclude-qt-translations \
