@@ -34,7 +34,7 @@ def configure_ssl_certs():
     for path in system_paths:
         if os.path.exists(path):
             os.environ["SSL_CERT_FILE"] = path
-            logger.info("Found local certificate")
+            logger.info("Using local CA bundle at %s", path)
             return
 
     # 2. Fall back to bundled certifi if host system has no detectable CA store
